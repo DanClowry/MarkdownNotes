@@ -20,4 +20,13 @@ public class MarkdownParserTest {
                 mdParser.parseToHTML("# level one heading"),
                 "Input text should be placed within a level-one heading <h1> element");
     }
+
+    @Test
+    public void parseToHTML_inputHeadingAndBody_returnsH1AndParagraphElements() {
+        MarkdownParser mdParser = new MarkdownParser();
+        assertEquals("<!DOCTYPE html><body><h1>level one heading</h1>\n<p>body text</p>\n</body>",
+                mdParser.parseToHTML("# level one heading\nbody text"),
+                "First line of input should be placed within a level-one heading <h1> element. " +
+                    "Second line of input should be placed within a separate paragraph <p> element.");
+    }
 }
