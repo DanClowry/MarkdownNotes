@@ -1,5 +1,6 @@
 package com.danclowry.noteapp.controllers;
 
+import com.danclowry.noteapp.markdown.MarkdownParser;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.web.WebView;
@@ -9,4 +10,11 @@ public class EditorController {
     private TextArea markdownEditor;
     @FXML
     private WebView markdownViewer;
+
+    public void initialize() {
+        MarkdownParser mdParser = new MarkdownParser();
+
+        markdownEditor.textProperty().addListener((observable, oldValue, newValue) ->
+                markdownViewer.getEngine().loadContent(mdParser.parseToHTML(markdownEditor.getText()), "text/html"));
+    }
 }
