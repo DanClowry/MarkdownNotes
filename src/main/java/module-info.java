@@ -6,6 +6,7 @@ module com.danclowry.noteapp {
     requires flexmark.util;
 
     opens com.danclowry.noteapp to javafx.fxml;
+    opens com.danclowry.noteapp.controllers to javafx.fxml;
     exports com.danclowry.noteapp;
     exports com.danclowry.noteapp.controllers;
 }

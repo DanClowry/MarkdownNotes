@@ -95,8 +95,8 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                     </rowConstraints>
                     <children>
-                        <TextArea prefHeight="200.0" prefWidth="200.0"/>
-                        <WebView prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1"/>
+                        <TextArea fx:id="markdownEditor" prefHeight="200.0" prefWidth="200.0"/>
+                        <WebView fx:id="markdownViewer" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1"/>
                     </children>
                 </GridPane>
             </children>
