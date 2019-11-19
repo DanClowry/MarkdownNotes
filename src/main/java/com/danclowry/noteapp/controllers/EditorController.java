@@ -14,6 +14,8 @@ public class EditorController {
     public void initialize() {
         MarkdownParser mdParser = new MarkdownParser();
 
+        markdownViewer.getEngine().setUserStyleSheetLocation(getClass().getResource("/css/md-viewer.css").toString());
+
         markdownEditor.textProperty().addListener((observable, oldValue, newValue) ->
                 markdownViewer.getEngine().loadContent(mdParser.parseToHTML(markdownEditor.getText()), "text/html"));
     }
