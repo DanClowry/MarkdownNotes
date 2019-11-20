@@ -1,4 +1,5 @@
 module com.danclowry.noteapp {
+    requires java.prefs;
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
