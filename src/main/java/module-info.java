@@ -1,5 +1,6 @@
 module com.danclowry.noteapp {
     requires java.prefs;
+    requires java.naming;
     requires java.sql;
     requires mysql.connector.java;
     requires javafx.controls;
