@@ -36,13 +36,13 @@
         </Label>
 
         <Label text="Hostname:" GridPane.rowIndex="1" />
-        <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <TextField fx:id="hostnameField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
         <Label text="Username:" GridPane.rowIndex="2" />
-        <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <TextField fx:id="usernameField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
         <Label text="Password:" GridPane.rowIndex="3" />
-        <PasswordField GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="4">
             <children>
@@ -51,7 +51,7 @@
                         <Insets right="5.0" />
                     </HBox.margin>
                 </Button>
-                <Button mnemonicParsing="false" text="Test Connection">
+                <Button fx:id="testButton" mnemonicParsing="false" text="Test Connection">
                     <HBox.margin>
                         <Insets left="5.0" />
                     </HBox.margin>
