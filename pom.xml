@@ -36,6 +36,11 @@
             <artifactId>flexmark-all</artifactId>
             <version>0.50.44</version>
         </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.18</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
