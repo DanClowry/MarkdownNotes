@@ -18,5 +18,17 @@ public class EditorController {
 
         markdownEditor.textProperty().addListener((observable, oldValue, newValue) ->
                 markdownViewer.getEngine().loadContent(mdParser.parseToHTML(markdownEditor.getText()), "text/html"));
+
+        // Replace tab characters with four spaces
+        markdownEditor.setOnKeyTyped(e -> {
+            if (e.getCharacter().equals("\t")) {
+                int caret = markdownEditor.getCaretPosition();
+                markdownEditor.setText(markdownEditor.getText().replaceAll("\\t", "    "));
+                // Position the caret four characters in front of its original position.
+                // Called because textSet resets the caret to the beginning of the text.
+                markdownEditor.positionCaret(caret + 3);
+            }
+            e.consume();
+        });
     }
 }
