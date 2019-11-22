@@ -45,8 +45,13 @@ public class MySqlRepository implements Repository {
     }
 
     @Override
-    public void createNote(Note note) {
-        throw new UnsupportedOperationException();
+    public void createNote(Note note) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            CallableStatement stmt = connection.prepareCall("{CALL Note_Create(?, ?)}");
+            stmt.setString(1, note.getTitle());
+            stmt.setString(2, note.getContent());
+            stmt.executeUpdate();
+        }
     }
 
     @Override
