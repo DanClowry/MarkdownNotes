@@ -9,6 +9,7 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -75,8 +76,22 @@ public class MySqlRepository implements Repository {
     }
 
     @Override
-    public List<Note> getListOfNotes() {
-        throw new UnsupportedOperationException();
+    public List<Note> getListOfNotes() throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            CallableStatement stmt = connection.prepareCall("{CALL Note_SelectAll}");
+            ResultSet resultSet = stmt.executeQuery();
+            if (!resultSet.isBeforeFirst()) {
+                throw new NoSuchElementException("A note with the specified ID was not found");
+            }
+
+            List<Note> notes = new ArrayList<>();
+            while (resultSet.next()) {
+                Note note = new Note(resultSet.getInt("NoteID"), resultSet.getString("Title"),
+                        resultSet.getString("Content"));
+                notes.add(note);
+            }
+            return notes;
+        }
     }
 
     @Override

@@ -13,7 +13,7 @@ public interface Repository {
     void createNote(Note note) throws SQLException;
     void updateNote(Note note) throws SQLException;
     void deleteNote(Note note) throws SQLException;
-    List<Note> getListOfNotes();
-    public boolean testConnection() throws SQLException;
-    public void setupDatabase() throws SQLException, IOException, URISyntaxException;
+    List<Note> getListOfNotes() throws SQLException;
+    boolean testConnection() throws SQLException;
+    void setupDatabase() throws SQLException, IOException, URISyntaxException;
 }
