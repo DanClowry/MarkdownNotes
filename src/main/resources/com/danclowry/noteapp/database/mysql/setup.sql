@@ -24,6 +24,7 @@ BEGIN
         title,
         content
     );
+    SELECT LAST_INSERT_ID();
 END;
 
 DROP PROCEDURE IF EXISTS Note_Update;

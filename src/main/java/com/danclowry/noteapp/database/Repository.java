@@ -10,7 +10,14 @@ import java.util.NoSuchElementException;
 
 public interface Repository {
     Note getById(int id) throws SQLException, NoSuchElementException;
-    void createNote(Note note) throws SQLException;
+
+    /**
+     * Creates a new note in the database using an INSERT INTO statement
+     * @param note The note to be inserted into the database
+     * @return The ID of the created note
+     * @throws SQLException If there is an error executing the statement
+     */
+    int createNote(Note note) throws SQLException;
     void updateNote(Note note) throws SQLException;
     void deleteNote(Note note) throws SQLException;
     List<Note> getListOfNotes() throws SQLException;

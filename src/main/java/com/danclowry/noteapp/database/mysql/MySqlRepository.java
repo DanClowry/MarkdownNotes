@@ -45,13 +45,18 @@ public class MySqlRepository implements Repository {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void createNote(Note note) throws SQLException {
+    public int createNote(Note note) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             CallableStatement stmt = connection.prepareCall("{CALL Note_Create(?, ?)}");
             stmt.setString(1, note.getTitle());
             stmt.setString(2, note.getContent());
-            stmt.executeUpdate();
+            ResultSet resultSet = stmt.executeQuery();
+            resultSet.first();
+            return resultSet.getInt("LAST_INSERT_ID()");
         }
     }
 
