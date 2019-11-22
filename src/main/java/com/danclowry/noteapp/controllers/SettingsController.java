@@ -1,7 +1,7 @@
 package com.danclowry.noteapp.controllers;
 
 import com.danclowry.noteapp.database.DatabaseConfig;
-import com.danclowry.noteapp.database.MySql.MySqlRepository;
+import com.danclowry.noteapp.database.mysql.MySqlRepository;
 import com.danclowry.noteapp.database.Repository;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;

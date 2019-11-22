@@ -1,4 +1,4 @@
-package com.danclowry.noteapp.database.MySql;
+package com.danclowry.noteapp.database.mysql;
 
 import com.danclowry.noteapp.database.DatabaseConfig;
 import com.danclowry.noteapp.database.Repository;
