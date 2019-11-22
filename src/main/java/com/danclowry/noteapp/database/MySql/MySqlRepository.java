@@ -3,10 +3,14 @@ package com.danclowry.noteapp.database.MySql;
 import com.danclowry.noteapp.database.DatabaseConfig;
 import com.danclowry.noteapp.database.Repository;
 import com.danclowry.noteapp.models.Note;
+import com.danclowry.noteapp.util.LoadResource;
 import com.mysql.cj.jdbc.MysqlDataSource;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 public class MySqlRepository implements Repository {
@@ -52,8 +56,24 @@ public class MySqlRepository implements Repository {
     }
 
     @Override
+    public void setupDatabase() throws SQLException, IOException, URISyntaxException {
+        MysqlDataSource setupDataSource = new MysqlDataSource();
+        setupDataSource.setURL("jdbc:mysql://" + DatabaseConfig.getHostname());
+        setupDataSource.setUser(DatabaseConfig.getUsername());
+        setupDataSource.setPassword(DatabaseConfig.getPassword());
+        setupDataSource.setServerTimezone("UTC");
+        setupDataSource.setAllowMultiQueries(true);
+
+        try (Connection connection = setupDataSource.getConnection()) {
+            Statement stmt = connection.createStatement();
+            String script = LoadResource.LoadResource("database/mysql/setup.sql");
+            stmt.executeUpdate(script);
+        }
+    }
+
+    @Override
     public boolean testConnection() throws SQLException {
-        try(Connection connection = dataSource.getConnection()) {
+        try (Connection connection = dataSource.getConnection()) {
             return connection.isValid(10);
         }
     }

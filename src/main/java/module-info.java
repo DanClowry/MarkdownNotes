@@ -13,4 +13,5 @@ module com.danclowry.noteapp {
     opens com.danclowry.noteapp.controllers to javafx.fxml;
     exports com.danclowry.noteapp;
     exports com.danclowry.noteapp.controllers;
+    exports com.danclowry.noteapp.database;
 }
