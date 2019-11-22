@@ -66,8 +66,12 @@ public class MySqlRepository implements Repository {
     }
 
     @Override
-    public void deleteNote(Note note) {
-        throw new UnsupportedOperationException();
+    public void deleteNote(Note note) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            CallableStatement stmt = connection.prepareCall("{CALL Note_Delete(?)}");
+            stmt.setInt(1, note.getId());
+            stmt.executeUpdate();
+        }
     }
 
     @Override
