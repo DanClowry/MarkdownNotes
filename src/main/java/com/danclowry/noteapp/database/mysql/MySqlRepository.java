@@ -8,10 +8,9 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class MySqlRepository implements Repository {
     MysqlDataSource dataSource = new MysqlDataSource();
@@ -31,8 +30,18 @@ public class MySqlRepository implements Repository {
     }
 
     @Override
-    public Note getById(int id) {
-        throw new UnsupportedOperationException();
+    public Note getById(int id) throws SQLException, NoSuchElementException {
+        try (Connection connection = dataSource.getConnection()) {
+            CallableStatement stmt = connection.prepareCall("{CALL Note_SelectByID(?)}");
+            stmt.setInt(1, id);
+            ResultSet resultSet = stmt.executeQuery();
+            if (!resultSet.isBeforeFirst()) {
+                throw new NoSuchElementException("A note with the specified ID was not found");
+            }
+            resultSet.first();
+            return new Note(resultSet.getInt("NoteID"), resultSet.getString("Title"),
+                    resultSet.getString("Content"));
+        }
     }
 
     @Override
