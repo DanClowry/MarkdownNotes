@@ -85,9 +85,6 @@ public class MySqlRepository implements Repository {
         try (Connection connection = dataSource.getConnection()) {
             CallableStatement stmt = connection.prepareCall("{CALL Note_SelectAll}");
             ResultSet resultSet = stmt.executeQuery();
-            if (!resultSet.isBeforeFirst()) {
-                throw new NoSuchElementException("A note with the specified ID was not found");
-            }
 
             List<Note> notes = new ArrayList<>();
             while (resultSet.next()) {
