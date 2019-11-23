@@ -26,6 +26,10 @@ public class SettingsController {
     private Button testButton;
 
     public void initialize() {
+        hostnameField.setText(DatabaseConfig.getHostname());
+        usernameField.setText(DatabaseConfig.getUsername());
+        passwordField.setText(DatabaseConfig.getPassword());
+
         saveButton.setOnAction(e -> {
             if (testConnection()) {
                 DatabaseConfig.setHostname(hostnameField.getText());
@@ -50,10 +54,11 @@ public class SettingsController {
                 Alert alert = AlertBuilder.createAlert("Connected",
                         "Successfully connected to database.", Alert.AlertType.INFORMATION);
                 alert.showAndWait();
+            } else {
+                Alert alert = AlertBuilder.createAlert("Error - Failed to connect to database",
+                        "Could not connect to database. Check that your credentials are correct.", Alert.AlertType.ERROR);
+                alert.showAndWait();
             }
-            Alert alert = AlertBuilder.createAlert("Error - Failed to connect to database",
-                    "Could not connect to database. Check that your credentials are correct.", Alert.AlertType.ERROR);
-            alert.showAndWait();
         });
     }
 
