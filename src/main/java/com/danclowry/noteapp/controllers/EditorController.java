@@ -31,6 +31,8 @@ public class EditorController {
     private ListView notesListView;
     @FXML
     private Button saveButton;
+    @FXML
+    private Button deleteButton;
 
     // TODO: Make observable
     private Note currentNote;
@@ -117,6 +119,20 @@ public class EditorController {
                                 "Please check your database connection settings", ex);
                 alert.showAndWait();
             }
+        });
+
+        deleteButton.setOnAction(e -> {
+            try {
+                Repository repository = new MySqlRepository();
+                repository.deleteNote(currentNote);
+            } catch (SQLException ex) {
+                Alert alert = AlertBuilder.createExceptionAlert("Error- Failed to delete note",
+                        "Could not delete note from database.\n" +
+                                "Please check your database connection settings", ex);
+                alert.showAndWait();
+            }
+
+            notesListView.getItems().remove(currentNote);
         });
     }
 }
