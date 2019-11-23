@@ -29,6 +29,11 @@ public class EditorController {
     private MenuItem settingsMenuItem;
     @FXML
     private ListView notesListView;
+    @FXML
+    private Button saveButton;
+
+    // TODO: Make observable
+    private Note currentNote;
 
     public void initialize() {
         MarkdownParser mdParser = new MarkdownParser();
@@ -95,8 +100,22 @@ public class EditorController {
             @Override
             public void changed(ObservableValue<? extends Note> observableValue, Note oldNote, Note newNote) {
                 if (newNote.getContent() != null) {
+                    currentNote = newNote;
                     markdownEditor.setText(newNote.getContent());
                 }
+            }
+        });
+
+        saveButton.setOnAction(e -> {
+            try {
+                Repository repository = new MySqlRepository();
+                currentNote.setContent(markdownEditor.getText());
+                repository.updateNote(currentNote);
+            } catch (SQLException ex) {
+                Alert alert = AlertBuilder.createExceptionAlert("Error- Failed to save note",
+                        "Could not save note to database.\n" +
+                                "Please check your database connection settings", ex);
+                alert.showAndWait();
             }
         });
     }
