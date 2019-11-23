@@ -6,6 +6,8 @@ import com.danclowry.noteapp.markdown.MarkdownParser;
 import com.danclowry.noteapp.models.Note;
 import com.danclowry.noteapp.util.AlertBuilder;
 import com.danclowry.noteapp.util.LoadFXML;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -88,5 +90,14 @@ public class EditorController {
                             "Please check your database connection settings", ex);
             alert.showAndWait();
         }
+
+        notesListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Note>() {
+            @Override
+            public void changed(ObservableValue<? extends Note> observableValue, Note oldNote, Note newNote) {
+                if (newNote.getContent() != null) {
+                    markdownEditor.setText(newNote.getContent());
+                }
+            }
+        });
     }
 }
