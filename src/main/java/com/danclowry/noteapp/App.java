@@ -2,6 +2,7 @@ package com.danclowry.noteapp;
 
 import com.danclowry.noteapp.database.Repository;
 import com.danclowry.noteapp.database.mysql.MySqlRepository;
+import com.danclowry.noteapp.util.AlertBuilder;
 import com.danclowry.noteapp.util.LoadFXML;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -26,19 +27,13 @@ public class App extends Application {
             Repository repository = new MySqlRepository();
             repository.setupDatabase();
         } catch (SQLException ex) {
-            ex.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText(null);
-            alert.setTitle("Error - Failed to connect to database");
-            alert.setContentText("Could not connect to database. Program will close.");
+            Alert alert = AlertBuilder.createExceptionAlert("Error - Failed to connect to database",
+                    "Could not connect to database. Program will close.", ex);
             alert.showAndWait();
             Platform.exit();
         } catch (IOException | URISyntaxException ex) {
-            ex.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText(null);
-            alert.setTitle("Error - Failed to connect to database");
-            alert.setContentText("Could not load setup script. Program will close.");
+            Alert alert = AlertBuilder.createExceptionAlert("Error - Failed to connect to database",
+                    "Could not load setup script. Program will close.", ex);
             alert.showAndWait();
             Platform.exit();
         }

@@ -1,6 +1,7 @@
 package com.danclowry.noteapp.controllers;
 
 import com.danclowry.noteapp.markdown.MarkdownParser;
+import com.danclowry.noteapp.util.AlertBuilder;
 import com.danclowry.noteapp.util.LoadFXML;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -41,6 +42,7 @@ public class EditorController {
             e.consume();
         });
 
+        // Open settings window
         settingsMenuItem.setOnAction(e -> {
             try {
                 Stage settings = new Stage();
@@ -49,9 +51,7 @@ public class EditorController {
                 settings.setResizable(false);
                 settings.showAndWait();
             } catch (IOException ex) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setHeaderText(null);
-                alert.setContentText("Error opening settings menu");
+                Alert alert = AlertBuilder.createAlert(null, "Error opening settings menu", Alert.AlertType.ERROR);
                 alert.showAndWait();
             }
         });

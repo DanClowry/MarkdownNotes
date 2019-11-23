@@ -1,10 +1,14 @@
 package com.danclowry.noteapp.controllers;
 
 import com.danclowry.noteapp.database.DatabaseConfig;
-import com.danclowry.noteapp.database.mysql.MySqlRepository;
 import com.danclowry.noteapp.database.Repository;
+import com.danclowry.noteapp.database.mysql.MySqlRepository;
+import com.danclowry.noteapp.util.AlertBuilder;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextField;
 
 import java.sql.SQLException;
 import java.util.Optional;
@@ -28,10 +32,8 @@ public class SettingsController {
                 DatabaseConfig.setUsername(usernameField.getText());
                 DatabaseConfig.setPassword(passwordField.getText());
             } else {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setHeaderText(null);
-                alert.setTitle("Error - Failed to connect to database");
-                alert.setContentText("Could not connect to database. Save anyway?");
+                Alert alert = AlertBuilder.createAlert("Error - Failed to connect to database",
+                        "Could not connect to database. Save anyway?", Alert.AlertType.WARNING);
                 alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
 
                 Optional<ButtonType> response = alert.showAndWait();
@@ -45,16 +47,12 @@ public class SettingsController {
 
         testButton.setOnAction(e -> {
             if (testConnection()) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setHeaderText(null);
-                alert.setTitle("Connected");
-                alert.setContentText("Successfully connected to database.");
+                Alert alert = AlertBuilder.createAlert("Connected",
+                        "Successfully connected to database.", Alert.AlertType.INFORMATION);
                 alert.showAndWait();
             }
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText(null);
-            alert.setTitle("Error - Failed to connect to database");
-            alert.setContentText("Could not connect to database. Check that your credentials are correct.");
+            Alert alert = AlertBuilder.createAlert("Error - Failed to connect to database",
+                    "Could not connect to database. Check that your credentials are correct.", Alert.AlertType.ERROR);
             alert.showAndWait();
         });
     }
