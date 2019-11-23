@@ -1,4 +1,8 @@
 module com.danclowry.noteapp {
+    requires java.prefs;
+    requires java.naming;
+    requires java.sql;
+    requires mysql.connector.java;
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
@@ -9,4 +13,5 @@ module com.danclowry.noteapp {
     opens com.danclowry.noteapp.controllers to javafx.fxml;
     exports com.danclowry.noteapp;
     exports com.danclowry.noteapp.controllers;
+    exports com.danclowry.noteapp.database;
 }
