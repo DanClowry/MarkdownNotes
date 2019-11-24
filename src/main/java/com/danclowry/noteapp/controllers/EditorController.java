@@ -105,6 +105,10 @@ public class EditorController {
         notesListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Note>() {
             @Override
             public void changed(ObservableValue<? extends Note> observableValue, Note oldNote, Note newNote) {
+                if (oldNote != null) {
+                    SaveNote(oldNote);
+                }
+
                 currentNote = newNote;
                 if (currentNote.getContent() != null) {
                     markdownEditor.setText(newNote.getContent());
@@ -126,29 +130,7 @@ public class EditorController {
             notesListView.getItems().set(notesListView.getSelectionModel().getSelectedIndex(), currentNote);
         });
 
-        saveButton.setOnAction(e -> {
-            try {
-                if (currentNote.getTitle().length() >= 100) {
-                    Alert alert = AlertBuilder.createAlert("Title too long",
-                            "Note title must be below 100 characters.\n" +
-                                    "Please shorten your title.", Alert.AlertType.WARNING);
-                    alert.showAndWait();
-                    return;
-                }
-
-                Repository repository = new MySqlRepository();
-                if (currentNote.getId() == null || currentNote.getId() == 0) {
-                    currentNote.setId(repository.createNote(currentNote));
-                } else {
-                    repository.updateNote(currentNote);
-                }
-            } catch (SQLException ex) {
-                Alert alert = AlertBuilder.createExceptionAlert("Error- Failed to save note",
-                        "Could not save note to database.\n" +
-                                "Please check your database connection settings", ex);
-                alert.showAndWait();
-            }
-        });
+        saveButton.setOnAction(e -> SaveNote(currentNote));
 
         deleteButton.setOnAction(e -> {
             try {
@@ -171,5 +153,29 @@ public class EditorController {
             markdownEditor.setText("");
             titleField.setText("");
         });
+    }
+
+    private void SaveNote(Note note) {
+        try {
+            if (note.getTitle().length() >= 100) {
+                Alert alert = AlertBuilder.createAlert("Title too long",
+                        "Note title must be below 100 characters.\n" +
+                                "Please shorten your title.", Alert.AlertType.WARNING);
+                alert.showAndWait();
+                return;
+            }
+
+            Repository repository = new MySqlRepository();
+            if (note.getId() == null || note.getId() == 0) {
+                note.setId(repository.createNote(note));
+            } else {
+                repository.updateNote(note);
+            }
+        } catch (SQLException ex) {
+            Alert alert = AlertBuilder.createExceptionAlert("Error- Failed to save note",
+                    "Could not save note to database.\n" +
+                            "Please check your database connection settings", ex);
+            alert.showAndWait();
+        }
     }
 }
