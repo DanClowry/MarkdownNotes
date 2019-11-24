@@ -81,7 +81,7 @@ public class EditorController {
             protected void updateItem(Note note, boolean empty) {
                 super.updateItem(note, empty);
 
-                if (empty || note == null || note.getTitle() == null) {
+                if (empty || note == null) {
                     setText(null);
                 } else {
                     setText(note.getTitle());
@@ -105,11 +105,18 @@ public class EditorController {
         notesListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Note>() {
             @Override
             public void changed(ObservableValue<? extends Note> observableValue, Note oldNote, Note newNote) {
-                if (newNote.getContent() != null) {
-                    currentNote = newNote;
+                currentNote = newNote;
+                if (currentNote.getContent() != null) {
                     markdownEditor.setText(newNote.getContent());
-                    titleField.setText(newNote.getTitle());
+                } else {
+                    markdownEditor.setText("");
                 }
+                if (currentNote.getTitle() != null) {
+                    titleField.setText(newNote.getTitle());
+                } else {
+                    titleField.setText("");
+                }
+
             }
         });
 
@@ -121,7 +128,7 @@ public class EditorController {
                 if (currentNote.getTitle().length() >= 100) {
                     Alert alert = AlertBuilder.createAlert("Title too long",
                             "Note title must be below 100 characters.\n" +
-                            "Please shorten your title.", Alert.AlertType.WARNING);
+                                    "Please shorten your title.", Alert.AlertType.WARNING);
                     alert.showAndWait();
                     return;
                 }
@@ -155,9 +162,11 @@ public class EditorController {
         });
 
         addNoteButton.setOnAction(e -> {
+            currentNote = new Note(null, null);
+            notesListView.getItems().add(currentNote);
+            notesListView.getSelectionModel().selectLast();
             markdownEditor.setText("");
             titleField.setText("");
-            currentNote = new Note(null, null);
         });
     }
 }
