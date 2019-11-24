@@ -121,7 +121,10 @@ public class EditorController {
         });
 
         markdownEditor.textProperty().addListener((observableValue, oldString, newString) -> currentNote.setContent(newString));
-        titleField.textProperty().addListener((observableValue, oldString, newString) -> currentNote.setTitle(newString));
+        titleField.textProperty().addListener((observableValue, oldString, newString) -> {
+            currentNote.setTitle(newString);
+            notesListView.getItems().set(notesListView.getSelectionModel().getSelectedIndex(), currentNote);
+        });
 
         saveButton.setOnAction(e -> {
             try {
