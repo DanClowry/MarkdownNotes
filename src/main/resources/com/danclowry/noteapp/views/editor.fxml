@@ -66,7 +66,7 @@
                 <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
                     <children>
                         <ListView fx:id="notesListView" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS"/>
-                        <Button mnemonicParsing="false" text="Create note" textAlignment="CENTER">
+                        <Button fx:id="addNoteButton" mnemonicParsing="false" text="Create note" textAlignment="CENTER">
                             <VBox.margin>
                                 <Insets bottom="10.0" top="10.0"/>
                             </VBox.margin>

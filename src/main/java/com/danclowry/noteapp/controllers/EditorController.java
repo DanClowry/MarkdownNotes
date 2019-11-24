@@ -35,6 +35,8 @@ public class EditorController {
     private Button saveButton;
     @FXML
     private Button deleteButton;
+    @FXML
+    private Button addNoteButton;
 
     // TODO: Make observable
     private Note currentNote;
@@ -125,7 +127,11 @@ public class EditorController {
                 }
 
                 Repository repository = new MySqlRepository();
-                repository.updateNote(currentNote);
+                if (currentNote.getId() == null || currentNote.getId() == 0) {
+                    currentNote.setId(repository.createNote(currentNote));
+                } else {
+                    repository.updateNote(currentNote);
+                }
             } catch (SQLException ex) {
                 Alert alert = AlertBuilder.createExceptionAlert("Error- Failed to save note",
                         "Could not save note to database.\n" +
@@ -146,6 +152,12 @@ public class EditorController {
             }
 
             notesListView.getItems().remove(currentNote);
+        });
+
+        addNoteButton.setOnAction(e -> {
+            markdownEditor.setText("");
+            titleField.setText("");
+            currentNote = new Note(null, null);
         });
     }
 }

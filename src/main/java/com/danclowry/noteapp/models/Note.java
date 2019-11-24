@@ -1,7 +1,7 @@
 package com.danclowry.noteapp.models;
 
 public class Note {
-    private int id;
+    private Integer id;
     private String title;
     private String content;
 
@@ -16,11 +16,11 @@ public class Note {
         this.content = content;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
