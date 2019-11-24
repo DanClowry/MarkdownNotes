@@ -48,7 +48,7 @@
                 <!-- Note title and action buttons -->
                 <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                     <children>
-                        <Label text="Note Title Here"/>
+                        <TextField fx:id="titleField" HBox.hgrow="ALWAYS" promptText="Note Title"/>
                         <Region HBox.hgrow="ALWAYS"/>
                         <Button fx:id="saveButton" mnemonicParsing="false" text="Save">
                             <HBox.margin>

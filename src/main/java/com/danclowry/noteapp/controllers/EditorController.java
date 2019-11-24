@@ -26,6 +26,8 @@ public class EditorController {
     @FXML
     private WebView markdownViewer;
     @FXML
+    private TextField titleField;
+    @FXML
     private MenuItem settingsMenuItem;
     @FXML
     private ListView notesListView;
@@ -104,14 +106,25 @@ public class EditorController {
                 if (newNote.getContent() != null) {
                     currentNote = newNote;
                     markdownEditor.setText(newNote.getContent());
+                    titleField.setText(newNote.getTitle());
                 }
             }
         });
 
+        markdownEditor.textProperty().addListener((observableValue, oldString, newString) -> currentNote.setContent(newString));
+        titleField.textProperty().addListener((observableValue, oldString, newString) -> currentNote.setTitle(newString));
+
         saveButton.setOnAction(e -> {
             try {
+                if (currentNote.getTitle().length() >= 100) {
+                    Alert alert = AlertBuilder.createAlert("Title too long",
+                            "Note title must be below 100 characters.\n" +
+                            "Please shorten your title.", Alert.AlertType.WARNING);
+                    alert.showAndWait();
+                    return;
+                }
+
                 Repository repository = new MySqlRepository();
-                currentNote.setContent(markdownEditor.getText());
                 repository.updateNote(currentNote);
             } catch (SQLException ex) {
                 Alert alert = AlertBuilder.createExceptionAlert("Error- Failed to save note",
