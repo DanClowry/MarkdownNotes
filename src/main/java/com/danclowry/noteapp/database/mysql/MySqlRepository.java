@@ -110,6 +110,17 @@ public class MySqlRepository implements Repository {
             String script = LoadResource.LoadResource("database/mysql/setup.sql");
             stmt.executeUpdate(script);
         }
+
+        try (Connection connection = dataSource.getConnection()) {
+            String autoInc = "SELECT `AUTO_INCREMENT` FROM  INFORMATION_SCHEMA.TABLES " +
+                    "WHERE TABLE_SCHEMA = Database() AND TABLE_NAME = 'Note'";
+            String sql = "INSERT INTO Note (Title, Content) SELECT 'Welcome to Markdown', ? WHERE (" +
+                    "SELECT Count(*) FROM Note) = 0";
+            String cheatsheet = LoadResource.LoadResource("database/cheatsheet.md");
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setString(1, cheatsheet);
+            stmt.executeUpdate();
+        }
     }
 
     @Override
