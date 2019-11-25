@@ -92,36 +92,22 @@ public class EditorController {
             }
         });
 
-        try {
-            Repository repository = new MySqlRepository();
-            ObservableList<Note> notesList = FXCollections.observableList(repository.getListOfNotes());
-            notesListView.setItems(notesList);
-            if (notesList.size() == 0) {
-                currentNote = new Note(null, null);
-                currentIndex = 0;
-                notesListView.getItems().add(currentNote);
-            }
-        } catch (SQLException ex) {
-            Alert alert = AlertBuilder.createExceptionAlert("Error- Failed to load saved notes",
-                    "Could not load saved notes from the database.\n" +
-                            "Please check your database connection settings", ex);
-            alert.showAndWait();
-        }
+        getAllNotes();
 
         notesListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Note>() {
             @Override
             public void changed(ObservableValue<? extends Note> observableValue, Note oldNote, Note newNote) {
-                if (oldNote != null) {
+                if (oldNote != null && oldNote.getTitle() != null) {
                     SaveNote(oldNote);
                 }
-
+                if (notesListView.getItems().size() == 0) {
+                    newNote = new Note(null, null);
+                }
                 if (newNote != null) {
                     currentNote = newNote;
                 }
 
-                if (currentIndex != 0) {
-                    currentIndex = notesListView.getSelectionModel().getSelectedIndex();
-                }
+                currentIndex = notesListView.getSelectionModel().getSelectedIndex();
                 if (currentNote.getContent() != null) {
                     markdownEditor.setText(currentNote.getContent());
                 } else {
@@ -139,7 +125,12 @@ public class EditorController {
         markdownEditor.textProperty().addListener((observableValue, oldString, newString) -> currentNote.setContent(newString));
         titleField.textProperty().addListener((observableValue, oldString, newString) -> {
             currentNote.setTitle(newString);
-            notesListView.getItems().set(currentIndex, currentNote);
+            if (currentIndex == -1 && notesListView.getItems().size() == 1) {
+                currentIndex = 0;
+            }
+            if (currentIndex != -1) {
+                notesListView.getItems().set(currentIndex, currentNote);
+            }
         });
 
         saveButton.setOnAction(e -> SaveNote(currentNote));
@@ -155,22 +146,14 @@ public class EditorController {
                 alert.showAndWait();
             }
 
-            int deleteIndex = currentIndex;
-            if (currentIndex == 0) {
-                currentNote = new Note(null, null);
-                titleField.setText("");
-                markdownEditor.setText("");
-            } else {
-                int newIndex = currentIndex - 1;
-                currentIndex = newIndex;
-                notesListView.getSelectionModel().select(newIndex);
-                notesListView.getItems().remove(deleteIndex);
-            }
-
+            getAllNotes();
             notesListView.refresh();
         });
 
         addNoteButton.setOnAction(e -> {
+            if (currentNote != null && currentNote.getTitle() != null) {
+                SaveNote(currentNote);
+            }
             currentNote = new Note(null, null);
             currentIndex = notesListView.getItems().size();
             notesListView.getItems().add(currentNote);
@@ -199,6 +182,27 @@ public class EditorController {
         } catch (SQLException ex) {
             Alert alert = AlertBuilder.createExceptionAlert("Error- Failed to save note",
                     "Could not save note to database.\n" +
+                            "Please check your database connection settings", ex);
+            alert.showAndWait();
+        }
+    }
+
+    private void getAllNotes() {
+        try {
+            Repository repository = new MySqlRepository();
+            ObservableList<Note> notesList = FXCollections.observableList(repository.getListOfNotes());
+            notesListView.setItems(notesList);
+            if (notesList.size() == 0) {
+                currentNote = new Note(null, null);
+                notesListView.getItems().add(currentNote);
+                currentIndex = 0;
+            } else {
+                currentNote = (Note) notesListView.getItems().get(0);
+                currentIndex = 0;
+            }
+        } catch (SQLException ex) {
+            Alert alert = AlertBuilder.createExceptionAlert("Error- Failed to load saved notes",
+                    "Could not load saved notes from the database.\n" +
                             "Please check your database connection settings", ex);
             alert.showAndWait();
         }
