@@ -21,6 +21,7 @@ public interface Repository {
     void updateNote(Note note) throws SQLException;
     void deleteNote(Note note) throws SQLException;
     List<Note> getListOfNotes() throws SQLException;
+    List<Note> getNotesByTitle(String searchTerm) throws SQLException;
     boolean testConnection() throws SQLException;
     void setupDatabase() throws SQLException, IOException, URISyntaxException;
 }

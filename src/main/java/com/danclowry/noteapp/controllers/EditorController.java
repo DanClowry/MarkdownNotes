@@ -13,6 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -29,6 +30,8 @@ public class EditorController {
     private TextField titleField;
     @FXML
     private MenuItem settingsMenuItem;
+    @FXML
+    private TextField searchField;
     @FXML
     private ListView notesListView;
     @FXML
@@ -120,6 +123,27 @@ public class EditorController {
                 }
 
             }
+        });
+
+        searchField.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ENTER) {
+                try {
+                    Repository repository = new MySqlRepository();
+                    ObservableList<Note> notesList =
+                            FXCollections.observableList(repository.getNotesByTitle(searchField.getText()));
+                    notesListView.setItems(notesList);
+                    if (!(notesList.size() == 0)) {
+                        currentNote = (Note) notesListView.getItems().get(0);
+                        currentIndex = 0;
+                    }
+                } catch (SQLException ex) {
+                    Alert alert = AlertBuilder.createExceptionAlert("Error- Failed to load saved notes",
+                            "Could not load saved notes from the database.\n" +
+                                    "Please check your database connection settings", ex);
+                    alert.showAndWait();
+                }
+            }
+            e.consume();
         });
 
         markdownEditor.textProperty().addListener((observableValue, oldString, newString) -> currentNote.setContent(newString));

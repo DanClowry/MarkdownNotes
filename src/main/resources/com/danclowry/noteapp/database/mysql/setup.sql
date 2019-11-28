@@ -64,3 +64,12 @@ CREATE PROCEDURE Note_SelectByID
 BEGIN
     SELECT * FROM Note WHERE NoteID = id;
 END;
+
+DROP PROCEDURE IF EXISTS Note_SelectByTitle;
+CREATE PROCEDURE Note_SelectByTitle
+(
+    IN _title VARCHAR(100)
+)
+BEGIN
+    SELECT * FROM Note WHERE Title LIKE CONCAT('%', _title, '%');
+END

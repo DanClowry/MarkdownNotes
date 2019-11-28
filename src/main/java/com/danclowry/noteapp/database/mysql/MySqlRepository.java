@@ -97,6 +97,23 @@ public class MySqlRepository implements Repository {
     }
 
     @Override
+    public List<Note> getNotesByTitle(String searchTerm) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            CallableStatement stmt = connection.prepareCall("{CALL Note_SelectByTitle(?)}");
+            stmt.setString(1, searchTerm);
+            ResultSet resultSet = stmt.executeQuery();
+
+            List<Note> notes = new ArrayList<>();
+            while (resultSet.next()) {
+                Note note = new Note(resultSet.getInt("NoteID"), resultSet.getString("Title"),
+                        resultSet.getString("Content"));
+                notes.add(note);
+            }
+            return notes;
+        }
+    }
+
+    @Override
     public void setupDatabase() throws SQLException, IOException, URISyntaxException {
         MysqlDataSource setupDataSource = new MysqlDataSource();
         setupDataSource.setURL("jdbc:mysql://" + DatabaseConfig.getHostname());
