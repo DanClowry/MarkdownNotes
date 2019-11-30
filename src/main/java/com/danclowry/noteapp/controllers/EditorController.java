@@ -31,6 +31,8 @@ public class EditorController {
     @FXML
     private MenuItem settingsMenuItem;
     @FXML
+    private MenuItem aboutMenuItem;
+    @FXML
     private TextField searchField;
     @FXML
     private ListView notesListView;
@@ -75,6 +77,20 @@ public class EditorController {
                 settings.showAndWait();
             } catch (IOException ex) {
                 Alert alert = AlertBuilder.createAlert(null, "Error opening settings menu", Alert.AlertType.ERROR);
+                alert.showAndWait();
+            }
+        });
+
+        // Open about window
+        aboutMenuItem.setOnAction(e -> {
+            try {
+                Stage settings = new Stage();
+                settings.setScene(new Scene(LoadFXML.loadFXML("about")));
+                settings.initModality(Modality.APPLICATION_MODAL);
+                settings.setResizable(false);
+                settings.showAndWait();
+            } catch (IOException ex) {
+                Alert alert = AlertBuilder.createAlert(null, "Error opening about menu", Alert.AlertType.ERROR);
                 alert.showAndWait();
             }
         });

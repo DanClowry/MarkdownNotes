@@ -8,6 +8,7 @@ module com.danclowry.noteapp {
     requires javafx.web;
     requires flexmark;
     requires flexmark.util;
+    requires java.desktop;
 
     opens com.danclowry.noteapp to javafx.fxml;
     opens com.danclowry.noteapp.controllers to javafx.fxml;
