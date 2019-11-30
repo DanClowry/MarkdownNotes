@@ -6,6 +6,11 @@ import com.danclowry.noteapp.markdown.MarkdownParser;
 import com.danclowry.noteapp.models.Note;
 import com.danclowry.noteapp.util.AlertBuilder;
 import com.danclowry.noteapp.util.LoadFXML;
+import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension;
+import com.vladsch.flexmark.ext.tables.TablesExtension;
+import com.vladsch.flexmark.parser.Parser;
+import com.vladsch.flexmark.util.data.DataSet;
+import com.vladsch.flexmark.util.data.MutableDataSet;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -20,6 +25,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 public class EditorController {
     @FXML
@@ -48,7 +54,9 @@ public class EditorController {
     private int currentIndex;
 
     public void initialize() {
-        MarkdownParser mdParser = new MarkdownParser();
+        DataSet parseOptions = new MutableDataSet().set(Parser.EXTENSIONS,
+                Arrays.asList(StrikethroughExtension.create(), TablesExtension.create()));
+        MarkdownParser mdParser = new MarkdownParser(parseOptions);
 
         markdownViewer.getEngine().setUserStyleSheetLocation(getClass().getResource("/css/md-viewer.css").toString());
 

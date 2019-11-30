@@ -9,6 +9,8 @@ module com.danclowry.noteapp {
     requires flexmark;
     requires flexmark.util;
     requires java.desktop;
+    requires flexmark.ext.gfm.strikethrough;
+    requires flexmark.ext.tables;
 
     opens com.danclowry.noteapp to javafx.fxml;
     opens com.danclowry.noteapp.controllers to javafx.fxml;
