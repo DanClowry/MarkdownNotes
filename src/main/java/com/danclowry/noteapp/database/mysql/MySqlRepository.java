@@ -114,7 +114,7 @@ public class MySqlRepository implements Repository {
     }
 
     @Override
-    public void setupDatabase() throws SQLException, IOException, URISyntaxException {
+    public void setupDatabase() throws SQLException, IOException {
         MysqlDataSource setupDataSource = new MysqlDataSource();
         setupDataSource.setURL("jdbc:mysql://" + DatabaseConfig.getHostname());
         setupDataSource.setUser(DatabaseConfig.getUsername());

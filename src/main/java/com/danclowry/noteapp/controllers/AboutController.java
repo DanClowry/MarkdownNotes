@@ -73,7 +73,7 @@ public class AboutController {
         String licenceText = "";
         try {
             licenceText = LoadResource.LoadResource(licencePath);
-        } catch (IOException | URISyntaxException ex) {
+        } catch (IOException ex) {
             AlertBuilder.createExceptionAlert("Error - failed to load licence",
                     "Could not load credit licence text", ex);
         }
