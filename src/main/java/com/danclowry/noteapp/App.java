@@ -28,9 +28,8 @@ public class App extends Application {
             repository.setupDatabase();
         } catch (SQLException ex) {
             Alert alert = AlertBuilder.createExceptionAlert("Error - Failed to connect to database",
-                    "Could not connect to database. Program will close.", ex);
+                    "Could not connect to database. Please check your connection settings.", ex);
             alert.showAndWait();
-            Platform.exit();
         } catch (IOException | URISyntaxException ex) {
             Alert alert = AlertBuilder.createExceptionAlert("Error - Failed to connect to database",
                     "Could not load setup script. Program will close.", ex);
